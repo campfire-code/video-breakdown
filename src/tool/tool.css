@@ -1,0 +1,42 @@
+/* 竞品视频拆解卡：只用 kit.css 的变量，类名以 vb- 开头 */
+.vb { flex: 1; display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); gap: 14px; align-items: start; min-height: 0; }
+.vb-hover .vb-edit { outline: 2px dashed var(--primary); outline-offset: 2px; }
+.vb-edit { position: sticky; top: 0; display: flex; flex-direction: column; gap: 14px; padding: 14px; max-height: 100%; }
+.vb-grow { flex: 1; min-height: 0; }
+.vb-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vb-text { min-height: 220px; height: 40vh; resize: vertical; font-size: .9em; font-family: inherit; line-height: 1.55; }
+.vb-go { justify-content: center; }
+.vb-view { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.vb-dir { max-width: min(300px, 100%); }
+.vb-dir span { max-width: 240px; }
+.vb-badge { font-size: .78em; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); }
+.vb-card { padding: 14px 16px; display: grid; gap: 8px; min-width: 0; }
+.vb-card p { margin: 0; }
+.vb-h { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.vb-hook { border-left: 4px solid var(--primary); }
+.vb-quote { font-size: 1.15em; font-weight: 600; line-height: 1.5; }
+.vb-title { display: flex; align-items: center; gap: 8px; font-size: .9em; }
+.vb-tag { display: inline-block; font-size: .8em; font-weight: 600; padding: 1px 8px; border-radius: 6px; background: var(--primary-soft); color: var(--primary); white-space: nowrap; }
+.vb-tag.soft { background: var(--chip); color: var(--muted); }
+.vb-shots { display: grid; }
+.vb-shot { display: grid; gap: 3px; padding: 10px 0; border-top: 1px solid var(--line); line-height: 1.5; }
+.vb-shot:first-child { border-top: 0; }
+.vb-shot-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vb-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: start; }
+.vb-list { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; line-height: 1.5; }
+.vb-conv { display: grid; gap: 2px; padding: 8px 0; border-top: 1px solid var(--line); line-height: 1.5; }
+.vb-conv:first-of-type { border-top: 0; padding-top: 0; }
+.vb-pace { display: flex; align-items: flex-end; gap: 3px; height: 64px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.vb-pace-col { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.vb-pace-col i { display: block; width: 100%; border-radius: 3px 3px 0 0; background: color-mix(in srgb, var(--primary) 45%, transparent); }
+.vb-pace-col i.hi { background: var(--primary); }
+.vb-empty { padding: 40px; text-align: center; }
+.vb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+.vb-thumb { display: grid; gap: 6px; padding: 0; border: 0; background: none; cursor: zoom-in; text-align: center; font-size: .85em; min-width: 0; color: inherit; }
+.vb-thumb canvas { width: 100%; aspect-ratio: 3 / 4; height: auto; border-radius: min(var(--radius), 10px); border: 1px solid var(--line); background: var(--chip); transition: border-color .15s var(--ease), transform .15s var(--ease); }
+.vb-thumb:hover canvas { border-color: var(--primary); transform: translateY(-2px); }
+.vb-zoom { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: color-mix(in srgb, var(--ink) 45%, transparent); }
+.vb-zoom-box { display: grid; gap: 12px; padding: 14px; max-height: 100%; }
+.vb-zoom-box canvas { height: min(72vh, 900px); width: auto; aspect-ratio: 3 / 4; border-radius: var(--radius); border: 1px solid var(--line); }
+.vb-zoom-bar { justify-content: center; }
+@media (max-width: 760px) { .vb { grid-template-columns: 1fr; } .vb-edit { position: static; } }
