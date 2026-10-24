@@ -198,6 +198,7 @@ export function buildMessages(s: Script, stats: Stats, opts: AnalyzeOpts) {
   const meta = [
     opts.note.trim() ? `视频标题或备注：${opts.note.trim()}` : '',
     platform ? `发布平台：${platform}` : '',
+    // check-zh: 忽略（写给大模型的提示词，字段名必须与解析代码一致）
     s.kind === 'srt' ? `输入是带时间轴的字幕，时长 ${fmtTime(s.durationMs ?? 0)}，每行前面是时间段` : '输入是没有时间轴的文案，所有 time 字段填空字符串',
     stats.perMinute ? `本地统计的平均语速：约 ${stats.perMinute} 字/分钟` : '',
     truncated ? `正文太长，只给出前 ${MAX_CHARS} 字左右` : '',
@@ -205,6 +206,7 @@ export function buildMessages(s: Script, stats: Stats, opts: AnalyzeOpts) {
   return [
     {
       role: 'system' as const,
+      // check-zh: 忽略（写给大模型的提示词，字段名必须与解析代码一致）
       content: `你是短视频内容分析师，帮创作者拆解同类视频的结构和话术。只依据给出的文案或字幕分析，不要编造文案里没有的内容；画面无法从文字得知，visual 只写建议。
 分镜按内容自然分段，一般 4～12 段，按时间顺序，时间段尽量用字幕里的时间。没有明显转化点时 conversions 返回空数组。
 只输出 JSON，不要任何其他文字，格式：

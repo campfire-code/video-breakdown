@@ -2,12 +2,13 @@
   "id": "c21",
   "slug": "video-breakdown",
   "name": "竞品视频拆解卡",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repo": "campfire-code/video-breakdown",
   "license": "MIT",
   "ui": {
-    "layout": "e",
-    "palette": "blue"
+    "layout": "b",
+    "palette": "blue",
+    "accent": "#8013AE"
   },
   "upstream": null
 }

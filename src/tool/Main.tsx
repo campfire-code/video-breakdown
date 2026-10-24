@@ -206,54 +206,60 @@ export function Main({ ctx }: { ctx?: Ctx }) {
         )}
         {!bd ? <div className="k-panel vb-empty k-muted">粘贴文案或导入字幕后，点「AI 拆解」</div> : (
           <>
-            <div className="k-panel vb-card vb-hook">
-              <div className="vb-h">开头钩子 {bd.hook.type && <span className="vb-tag">{bd.hook.type}</span>}{bd.hook.time && <span className="k-muted k-num">{bd.hook.time}</span>}</div>
-              <p className="vb-quote">「{bd.hook.text || '没有识别到明显的开头钩子'}」</p>
-              {bd.hook.why && <p className="k-muted">{bd.hook.why}</p>}
-              <div className="vb-title k-muted">{bd.genre && <span className="vb-tag soft">{bd.genre}</span>}{bd.title}</div>
-            </div>
+            <Timeline bd={bd} stats={result!.stats} />
 
-            <div className="k-panel vb-card">
-              <div className="vb-h">分镜结构 <span className="k-muted k-num">{bd.shots.length} 段</span></div>
-              <div className="vb-shots">
-                {bd.shots.map((s, i) => (
-                  <div key={i} className="vb-shot">
-                    <div className="vb-shot-head"><span className="k-num k-muted">{s.time || i + 1}</span>{s.stage && <span className="vb-tag">{s.stage}</span>}</div>
-                    <div>{s.content}</div>
-                    {s.line && <div className="k-muted">「{s.line}」</div>}
-                    {(s.technique || s.purpose) && <div className="k-muted">{[s.technique && `手法：${s.technique}`, s.purpose && `作用：${s.purpose}`].filter(Boolean).join('；')}</div>}
+            <div className="vb-cols">
+              <div className="k-panel vb-card vb-shotcard">
+                <div className="vb-h">分镜结构 <span className="k-muted k-num">{bd.shots.length} 段</span></div>
+                <ol className="vb-shots">
+                  {bd.shots.map((s, i) => (
+                    <li key={i} className="vb-shot">
+                      <span className="vb-dot" aria-hidden>{i + 1}</span>
+                      <div className="vb-shot-body">
+                        <div className="vb-shot-head"><span className="k-num k-muted">{s.time || `第 ${i + 1} 段`}</span>{s.stage && <span className="vb-tag">{s.stage}</span>}</div>
+                        <div>{s.content}</div>
+                        {s.line && <div className="vb-line">「{s.line}」</div>}
+                        {(s.technique || s.purpose) && <div className="k-muted">{[s.technique && `手法：${s.technique}`, s.purpose && `作用：${s.purpose}`].filter(Boolean).join('；')}</div>}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="vb-side">
+                <div className="k-panel vb-card vb-hook">
+                  <div className="vb-h">开头钩子 {bd.hook.type && <span className="vb-tag">{bd.hook.type}</span>}{bd.hook.time && <span className="k-muted k-num">{bd.hook.time}</span>}</div>
+                  <p className="vb-quote">「{bd.hook.text || '没有识别到明显的开头钩子'}」</p>
+                  {bd.hook.why && <p className="k-muted">{bd.hook.why}</p>}
+                  <div className="vb-title k-muted">{bd.genre && <span className="vb-tag soft">{bd.genre}</span>}{bd.title}</div>
+                </div>
+
+                <div className="k-panel vb-card">
+                  <div className="vb-h">话术节奏</div>
+                  {bd.rhythm.structure && <p><b>{bd.rhythm.structure}</b></p>}
+                  {bd.rhythm.summary && <p>{bd.rhythm.summary}</p>}
+                  {bd.rhythm.notes.length > 0 && <ul className="vb-list">{bd.rhythm.notes.map((n, i) => <li key={i}>{n}</li>)}</ul>}
+                </div>
+
+                <div className="k-panel vb-card">
+                  <div className="vb-h">转化点 <span className="k-muted k-num">{bd.conversions.length} 处</span></div>
+                  {bd.conversions.length ? bd.conversions.map((c, i) => (
+                    <div key={i} className="vb-conv">
+                      <div><span className="vb-tag warm">{c.type || '转化'}</span> <span className="k-muted k-num">{c.time}</span></div>
+                      <div>「{c.line}」</div>
+                      {c.tip && <div className="k-muted">{c.tip}</div>}
+                    </div>
+                  )) : <p className="k-muted">没有明显的转化点</p>}
+                </div>
+
+                {bd.takeaways.length > 0 && (
+                  <div className="k-panel vb-card">
+                    <div className="vb-h">可以借鉴</div>
+                    <ol className="vb-list">{bd.takeaways.map((t, i) => <li key={i}>{t}</li>)}</ol>
                   </div>
-                ))}
+                )}
               </div>
             </div>
-
-            <div className="vb-two">
-              <div className="k-panel vb-card">
-                <div className="vb-h">话术节奏</div>
-                <div className="k-muted k-num">{result!.stats.durationMs ? `时长 ${fmtTime(result!.stats.durationMs)} · ${result!.stats.words} 字 · 平均 ${result!.stats.perMinute} 字/分钟` : `${result!.stats.words} 字 · 纯文案不计算语速`}</div>
-                {bd.rhythm.structure && <p><b>{bd.rhythm.structure}</b></p>}
-                {result!.stats.pace.length > 1 && <PaceBars pace={result!.stats.pace} />}
-                {bd.rhythm.summary && <p>{bd.rhythm.summary}</p>}
-                {bd.rhythm.notes.length > 0 && <ul className="vb-list">{bd.rhythm.notes.map((n, i) => <li key={i}>{n}</li>)}</ul>}
-              </div>
-              <div className="k-panel vb-card">
-                <div className="vb-h">转化点 <span className="k-muted k-num">{bd.conversions.length} 处</span></div>
-                {bd.conversions.length ? bd.conversions.map((c, i) => (
-                  <div key={i} className="vb-conv">
-                    <div><span className="vb-tag">{c.type || '转化'}</span> <span className="k-muted k-num">{c.time}</span></div>
-                    <div>「{c.line}」</div>
-                    {c.tip && <div className="k-muted">{c.tip}</div>}
-                  </div>
-                )) : <p className="k-muted">没有明显的转化点</p>}
-              </div>
-            </div>
-
-            {bd.takeaways.length > 0 && (
-              <div className="k-panel vb-card">
-                <div className="vb-h">可以借鉴</div>
-                <ol className="vb-list">{bd.takeaways.map((t, i) => <li key={i}>{t}</li>)}</ol>
-              </div>
-            )}
 
             <div className="vb-h">图片预览 <span className="k-muted k-num">{pages.length} 张 · 1080×1440</span></div>
             <div className="vb-grid">
@@ -277,6 +283,46 @@ export function Main({ ctx }: { ctx?: Ctx }) {
         </div>
       )}
     </div>
+  );
+}
+
+/** 把「00:05-00:12」这类时间段转成秒；读不出来返回 null */
+function parseRange(t: string): [number, number] | null {
+  const m = t.match(/(\d+):(\d+)(?::(\d+))?\s*[-–—~～]\s*(\d+):(\d+)(?::(\d+))?/);
+  if (!m) return null;
+  const sec = (a: string, b: string, c?: string) => (c == null ? Number(a) * 60 + Number(b) : Number(a) * 3600 + Number(b) * 60 + Number(c));
+  return [sec(m[1], m[2], m[3]), sec(m[4], m[5], m[6])];
+}
+
+/** 整条视频一条时间轴：上面是分镜段，中间是语速，下面标出转化点 */
+function Timeline({ bd, stats }: { bd: Breakdown; stats: Stats }) {
+  const segs = bd.shots.map((s) => parseRange(s.time));
+  if (!bd.shots.length || segs.some((x) => !x)) return null;
+  const ranges = segs as [number, number][];
+  const total = Math.max(1, stats.durationMs ? stats.durationMs / 1000 : 0, ...ranges.map((r) => r[1]));
+  const pct = (v: number) => `${Math.min(100, (v / total) * 100)}%`;
+  const pins = bd.conversions.map((c) => ({ c, at: parseRange(c.time)?.[0] })).filter((x): x is { c: Breakdown['conversions'][number]; at: number } => x.at != null);
+  return (
+    <section className="k-panel vb-tl" aria-label="视频时间轴">
+      <div className="vb-tl-hd">
+        <b>一条时间轴看完整个视频</b>
+        <span className="k-muted k-num">{stats.durationMs ? `时长 ${fmtTime(stats.durationMs)} · ${stats.words} 字 · 平均 ${stats.perMinute} 字/分钟` : `${stats.words} 字`}</span>
+      </div>
+      <div className="vb-tl-track">
+        {ranges.map(([from, to], i) => (
+          <div key={i} className={`vb-seg${i === 0 ? ' first' : ''}`} style={{ left: pct(from), width: pct(Math.max(0, to - from)) }} title={`${bd.shots[i].time} ${bd.shots[i].stage}`}>
+            <span>{bd.shots[i].stage || i + 1}</span>
+          </div>
+        ))}
+      </div>
+      {stats.pace.length > 1 && <PaceBars pace={stats.pace} />}
+      {pins.length > 0 && (
+        <div className="vb-tl-pins">
+          {pins.map(({ c, at }, i) => <span key={i} className={`vb-pin${at / total > 0.95 ? ' end' : ''}`} style={{ left: pct(at), top: (i % 2) * 22 }} title={`${c.time} ${c.line}`}><i />{c.type || '转化'}</span>)}
+        </div>
+      )}
+      <div className="vb-tl-axis k-num k-muted"><span>0:00</span><span>{fmtTime(total * 1000)}</span></div>
+    </section>
   );
 }
 

@@ -1,10 +1,10 @@
 /* 竞品视频拆解卡：只用 kit.css 的变量，类名以 vb- 开头 */
-.vb { flex: 1; display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); gap: 14px; align-items: start; min-height: 0; }
+.vb { flex: 1; font-size: 13.5px; display: grid; grid-template-columns: minmax(250px, 300px) minmax(0, 1fr); gap: 14px; align-items: start; min-height: 0; }
 .vb-hover .vb-edit { outline: 2px dashed var(--primary); outline-offset: 2px; }
 .vb-edit { position: sticky; top: 0; display: flex; flex-direction: column; gap: 14px; padding: 14px; max-height: 100%; }
 .vb-grow { flex: 1; min-height: 0; }
 .vb-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.vb-text { min-height: 220px; height: 40vh; resize: vertical; font-size: .9em; font-family: inherit; line-height: 1.55; }
+.vb-text { min-height: 160px; height: 34vh; resize: vertical; font-size: .9em; font-family: inherit; line-height: 1.55; }
 .vb-go { justify-content: center; }
 .vb-view { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .vb-dir { max-width: min(300px, 100%); }
@@ -18,9 +18,6 @@
 .vb-title { display: flex; align-items: center; gap: 8px; font-size: .9em; }
 .vb-tag { display: inline-block; font-size: .8em; font-weight: 600; padding: 1px 8px; border-radius: 6px; background: var(--primary-soft); color: var(--primary); white-space: nowrap; }
 .vb-tag.soft { background: var(--chip); color: var(--muted); }
-.vb-shots { display: grid; }
-.vb-shot { display: grid; gap: 3px; padding: 10px 0; border-top: 1px solid var(--line); line-height: 1.5; }
-.vb-shot:first-child { border-top: 0; }
 .vb-shot-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .vb-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: start; }
 .vb-list { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; line-height: 1.5; }
@@ -40,3 +37,31 @@
 .vb-zoom-box canvas { height: min(72vh, 900px); width: auto; aspect-ratio: 3 / 4; border-radius: var(--radius); border: 1px solid var(--line); }
 .vb-zoom-bar { justify-content: center; }
 @media (max-width: 760px) { .vb { grid-template-columns: 1fr; } .vb-edit { position: static; } }
+
+/* 时间轴：分镜段 + 语速 + 转化点 */
+.vb-tl { padding: 14px 16px 10px; display: grid; gap: 8px; background: linear-gradient(180deg, var(--primary-soft), var(--surface) 70%); }
+.vb-tl-hd { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.vb-tl-track { position: relative; height: 40px; border-radius: var(--radius); background: var(--chip); overflow: hidden; }
+.vb-seg { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; padding: 0 6px; border-right: 2px solid var(--surface); background: color-mix(in srgb, var(--primary) 22%, var(--surface)); color: var(--ink); font-size: 13px; font-weight: 600; overflow: hidden; }
+.vb-seg:nth-child(even) { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); }
+.vb-seg.first { background: var(--primary); color: var(--on-primary); }
+.vb-seg span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vb-tl .vb-pace { height: 54px; }
+.vb-tl-pins { position: relative; height: 44px; }
+.vb-pin { position: absolute; top: 0; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; font-weight: 600; color: var(--warn); transform: translateX(0); }
+.vb-pin i { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); }
+.vb-pin.end { transform: translateX(-100%); flex-direction: row-reverse; }
+.vb-tl-axis { display: flex; justify-content: space-between; font-size: 13px; }
+
+.vb-cols { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+.vb-side { display: grid; gap: 12px; min-width: 0; }
+.vb-shots { list-style: none; margin: 0; padding: 0; display: grid; }
+.vb-shot { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; padding: 0; border: 0; position: relative; }
+.vb-shot:not(:last-child)::before { content: ""; position: absolute; left: 11px; top: 26px; bottom: 0; width: 2px; background: var(--line); }
+.vb-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+.vb-shot-body { display: grid; gap: 3px; padding-bottom: 14px; line-height: 1.55; min-width: 0; }
+.vb-line { font-weight: 600; }
+.vb-tag.warm { background: var(--warn-soft); color: var(--warn); }
+.vb-tag, .vb-badge { font-size: 13px; }
+.vb-hook { border-left: 0; background: var(--primary-soft); }
+@media (max-width: 900px) { .vb-cols { grid-template-columns: 1fr; } }
